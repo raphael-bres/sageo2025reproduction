@@ -1,0 +1,6 @@
+#Download the geofabrik file for january the first of 2025 in rhone-alpes area
+wget "https://download.geofabrik.de/europe/france/rhone-alpes-250101.osm.pbf"
+#Creation of the required OSRM files
+sudo docker run -t -v /home/ubuntu/data:/data ghcr.io/project-osrm/osrm-backend osrm-extract -p /opt/bicycle.lua /data/rhone-alpes-250101.osm.pbf
+sudo docker run -t -v /home/ubuntu/data:/data ghcr.io/project-osrm/osrm-backend osrm-partition /data/rhone-alpes-250101.osm.pbf
+sudo docker run -t -v /home/ubuntu/data:/data ghcr.io/project-osrm/osrm-backend osrm-customize /data/rhone-alpes-250101.osm.pbf
