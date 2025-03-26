@@ -1,0 +1,25 @@
+CASE
+WHEN "highway" is null THEN ''
+WHEN "highway" in ('trunk','trunk_link','motorway','motorway_link') THEN 'interdit'
+WHEN "highway"='cycleway' OR 
+map_get(hstore_to_map("other_tags"),'cycleway') in ('track','opposite_track') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:both') in ('track','opposite_track') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:left') in ('track','opposite_track') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:right') in ('track','opposite_track') THEN 'piste'
+WHEN map_get(hstore_to_map("other_tags"),'cycleway') in ('lane','opposite_lane') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:both') in ('lane','opposite_lane') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:right') in ('lane','opposite_lane') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:left') in ('lane','opposite_lane') THEN 'bande'
+WHEN map_get(hstore_to_map("other_tags"),'cycleway') in ('shared_lane','opposite') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:both') in ('shared_lane','opposite') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:right') in ('shared_lane','opposite') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:left') in ('shared_lane','opposite') THEN 'partage'
+WHEN map_get(hstore_to_map("other_tags"),'cycleway') in ('share_busway','opposite_share_busway') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:both') in ('share_busway','opposite_share_busway') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:right') in ('share_busway','opposite_share_busway') OR 
+map_get(hstore_to_map("other_tags"),'cycleway:left') in ('share_busway','opposite_share_busway') THEN 'partageBus'
+WHEN "highway"='living_street' THEN 'rencontre'
+WHEN "highway" in('pedestrian', 'bridleway', 'footway', 'path', 'sidewalk', 'crossing') THEN 'pieton'
+WHEN "highway"='steps' THEN 'escaliers'
+ELSE 'routier'
+END
